@@ -1,0 +1,508 @@
+@import url("./fonts.css");
+@import url("./setup.css");
+@import url("./helper.css");
+
+.navigation-bar {
+  font-size: 1.05rem;
+  height: 4rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  max-width: 1440px;
+  z-index: 5;
+  padding: 0 calc(0.2rem + 2vw);
+  background-color: var(--surface);
+  border-bottom: 1px solid rgba(92, 92, 92, 0.267);
+  display: flex;
+
+  & .item {
+    font-weight: 600;
+    display: inline-block;
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover:not(.active) {
+      color: var(--primary);
+    }
+
+    &.active {
+      background-color: var(--secondary);
+      color: var(--primary);
+    }
+  }
+
+  & #mobile-nav {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    background-color: var(--surface);
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    & .item {
+      display: block;
+      text-align: left;
+
+      &.rooms {
+        display: flex;
+        align-items: center;
+
+        & i {
+          flex-grow: 1;
+        }
+      }
+    }
+
+    & #mobile-nav-rooms {
+      padding: 0 1rem;
+
+      &:not(.active) {
+        display: none;
+      }
+
+      & .item {
+        border: 1px solid var(--outline-variant);
+        font-size: 0.85rem;
+      }
+    }
+  }
+
+  & #nav-room-menu {
+    padding: 1rem;
+    width: 35rem;
+    max-width: 90vw;
+
+    & .item {
+      padding: 1rem;
+
+      &:hover {
+        background-color: var(--secondary);
+      }
+    }
+  }
+}
+
+#hero {
+  gap: 1rem;
+
+  & .texts-wrapper {
+    max-width: 80%;
+  }
+
+  & .title {
+    font-size: calc(2rem + 0.8vw);
+  }
+
+  & .subtitle {
+    font-size: 1.2rem;
+    opacity: 0.8;
+  }
+
+  & img {
+    width: calc(10rem + 15vw);
+    max-width: 25rem;
+    object-fit: contain;
+    border-radius: 5%;
+  }
+}
+
+body.dark #hero {
+  & img {
+    background-color: var(--body);
+    opacity: 0.6;
+  }
+}
+
+#offer {
+  & p {
+    font-size: 1.2rem;
+    font-weight: 500;
+    opacity: 0.7;
+  }
+
+  & button {
+    margin: 1rem 0;
+  }
+
+  & .item {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    & img {
+      width: calc(200px + 20vw);
+      max-width: 300px;
+      border-radius: 14px;
+      object-fit: cover;
+    }
+
+    & h6 {
+      opacity: 1;
+    }
+
+    & p {
+      font-size: 1rem;
+      line-height: 1.7rem;
+    }
+
+    & div {
+      max-width: 40rem;
+    }
+  }
+}
+
+body.dark #offer {
+  & .item img {
+    opacity: 0.7;
+  }
+}
+
+#benefits {
+  & .row {
+    justify-content: center;
+    gap: calc(2rem + 1vw);
+  }
+
+  & .item {
+    width: calc(10rem + 10vw);
+    max-width: 20rem;
+    padding: 1.2rem;
+    border-radius: 12px;
+    border: 1px solid rgba(128, 128, 128, 0.267);
+    flex-grow: 1;
+    transition: 0.2s all ease;
+
+    &:hover {
+      background-color: rgba(128, 128, 128, 0.116);
+      transform: scale(1.05);
+    }
+
+    & > p {
+      font-size: 0.9rem;
+      font-weight: 500;
+      opacity: 0.6;
+      margin-top: 1rem !important;
+      line-height: 1.5rem;
+    }
+  }
+}
+
+#contact {
+  & .row {
+    margin-top: 2rem;
+    gap: 3rem;
+    justify-content: center;
+  }
+
+  & img {
+    max-width: 70vw;
+  }
+
+  & .textarea,
+  & textarea {
+    height: 15rem;
+  }
+}
+
+body.dark #contact {
+  & img {
+    opacity: 0.4;
+  }
+}
+
+#room {
+  & .header-img {
+    border-radius: 10px;
+    width: 100%;
+    max-width: 90vw;
+    height: calc(10rem + 20vw);
+    max-height: 30rem;
+    object-fit: cover;
+  }
+
+  & .image-row {
+    padding: 1rem 0;
+    display: flex;
+    overflow-x: scroll;
+    gap: 1rem;
+
+    & img {
+      border-radius: 10px;
+      height: calc(4rem + 5vw);
+      max-height: 8rem;
+    }
+  }
+
+  & .detail {
+    margin-top: 2rem;
+    font-size: 1.1rem;
+    line-height: 1.8rem;
+
+    & p,
+    li {
+      opacity: 0.8;
+      margin: 1.3rem 0;
+    }
+
+    & .spec {
+      display: flex;
+      gap: 1.2rem;
+      margin: 0.5rem 0;
+    }
+  }
+
+  & .payment-container {
+    & #payment {
+      font-size: 2rem;
+      font-weight: 600;
+    }
+  }
+}
+
+#check-availability,
+#make-reservation {
+  font-size: 1rem;
+
+  & label {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  & img {
+    max-width: 70vw;
+  }
+
+  & #availability {
+    & i {
+      font-size: 2rem;
+      width: 2rem;
+    }
+
+    & .room {
+      border: 1px solid rgba(128, 128, 128, 0.349);
+      border-radius: 8px;
+      text-align: center;
+      visibility: visible;
+      font-size: 1.2rem;
+      font-weight: 600;
+      padding: 2rem 0;
+      transition: 0.2s all ease;
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--secondary);
+        color: var(--primary);
+        transform: scale(1.05);
+      }
+    }
+  }
+}
+
+body.dark {
+  & #check-availability,
+  #make-reservation {
+    & img {
+      opacity: 0.6;
+      border-radius: 10px;
+    }
+  }
+}
+
+.table-wrapper {
+  margin-top: 2rem;
+  overflow-x: scroll;
+  width: 100%;
+}
+
+table {
+  min-width: 100%;
+  border: 1px solid rgba(128, 128, 128, 0.301);
+  border-radius: 10px;
+  overflow: hidden; 
+
+  & thead {
+    background-color: var(--primary);
+    color: var(--on-primary);
+    border-radius: 0;
+
+    & th {
+      padding: 1rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+  }
+
+  & tbody {
+    & td {
+      padding: 0.5rem 1rem;
+    }
+
+    & .name {
+      min-width: 16rem;
+      font-weight: 500;
+    }
+ 
+    & tr:nth-child(even) {
+      background-color: var(--surface);
+    }
+  }
+}
+
+#login {
+  padding: 1rem 0;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & label {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  & .field {
+    margin: 0.5rem 0;
+  }
+
+  & article {
+    padding: 1rem 2rem 2rem 2rem;
+    border: 1px solid var(--secondary);
+    width: 30rem;
+    max-width: 90vw;
+  }
+}
+
+body.admin {
+  background-color: var(--body);
+
+  & section {
+    padding: 1rem;
+  }
+
+  & .sidebar {
+    z-index: 4;
+    width: 14rem;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0.5rem;
+    gap: 1rem;
+
+    & a {
+      padding: 0.7rem 1rem;
+      font-size: 1rem;
+      font-weight: 500;
+      display: flex;
+      justify-content: start;
+      gap: 0.5rem;
+      width: 100%;
+      border-radius: 10px;
+      opacity: 0.8;
+      transition: all 0.2s ease;
+
+      &:hover {
+        color: var(--primary);
+      }
+
+      &.active {
+        background-color: var(--secondary);
+        color: var(--primary);
+        font-weight: 600;
+        opacity: 1;
+      }
+    }
+  }
+
+  & #admin-show-reservation {
+    & form { 
+      padding: 0 1rem;
+      font-size: 1rem;
+
+      & label {
+        font-size: .9rem;
+        font-weight: 600;
+      }
+
+      & input {
+        background-color: var(--surface);
+      }
+
+      & i {
+        z-index: 2; 
+      }
+    } 
+  }
+
+  & .actions {
+    position: sticky;
+    top: 5rem;
+  }
+}
+
+footer {
+  padding: 2rem;
+  background-color: var(--body);
+
+  & .links {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 1rem;
+
+    & p {
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    & a {
+      opacity: 0.8;
+    }
+  }
+}
+
+@media screen and (min-width: 992px) {
+  #room .payment-container {
+    position: sticky;
+    top: 5rem;
+    width: calc(17rem + 13vw);
+    max-width: 30rem;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  #offer .item {
+    flex-wrap: wrap;
+
+    & img {
+      width: 100%;
+      max-width: 100%;
+      height: 10rem;
+    }
+  }
+
+  #contact .row {
+    justify-content: start;
+  }
+
+  body.admin {
+    & #admin-all-reservations {
+      width: 100vw; 
+    }
+    
+    & .sidebar {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #benefits .item {
+    max-width: 100%;
+  }
+}

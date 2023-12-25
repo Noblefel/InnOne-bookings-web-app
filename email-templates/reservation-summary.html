@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservation Summary Email</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/beercss@3.4.8/dist/cdn/beer.min.css"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <style>
+    body {
+      font-family: DM Sans;
+      background-color: var(--body);
+      --primary: #d12e25;
+      --secondary: #ffcdd277;
+      --body: rgb(245, 245, 245);
+      --surface: white;
+      --error: #f13329;
+      --success: #4caf50;
+    }
+
+    article {
+      width: 600px;
+      max-width: 90vw;
+      margin: auto;
+      background-color: white;
+      border: 1px solid rgba(128, 128, 128, 0.171);
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: 1.3rem;
+      padding: 0.3rem;
+      background-color: var(--secondary);
+      color: var(--primary);
+    } 
+
+    .logo {
+      margin: auto;
+      width: 5rem;
+    }
+
+    .content {
+      padding: 1rem;
+      font-weight: 500;
+      line-height: 1.4rem;
+    }
+
+    table {
+      margin: 1rem 0;
+      border: 1px solid rgba(133, 133, 133, 0.164); 
+      ---stripes: rgb(0 0 0 / .03);
+    }
+
+    footer {
+      background-color: var(--body);
+      margin-top: 2rem;
+      font-weight: 600;
+    }
+  </style>
+  <body>
+    <div class="responsive padding">
+      <h6 class="center-align">InnOne</h6>
+      <div class="space"></div>
+      <article class="no-elevate">
+        <img
+          src="http://localhost:8080/static/images/logo.png"
+          alt="Site Logo"
+          class="logo center"
+        />
+        <h1 class="center-align">Reservation Summary</h1>
+
+        <div class="content">
+          Dear <b>[%name%]</b>,
+          <br />
+          Below is to confirm your reservation:
+
+          <table class="stripes">
+            <tbody>
+              <tr>
+                <td>Room</td>
+                <td>[%room%]</td>
+              </tr>
+              <tr>
+                <td>Arrival</td>
+                <td>[%from%]</td>
+              </tr>
+              <tr>
+                <td>Departure</td>
+                <td>[%to%]</td>
+              </tr>
+            </tbody>
+          </table> 
+        </div> 
+      </article>
+
+      <footer>
+        <p class="center-align medium-opacity">Copyright 2023</p>
+      </footer>
+    </div>
+  </body>
+</html>

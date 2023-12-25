@@ -1,0 +1,170 @@
+{{ define "admin" }}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/beercss@3.4.0/dist/cdn/beer.min.css"
+      rel="stylesheet"
+    />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/beercss@3.4.0/dist/cdn/beer.min.js"
+    ></script>
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.0.5/dist/cdn/material-dynamic-colors.min.js"
+    ></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.3/build/global/luxon.min.js"></script>
+
+    <link rel="stylesheet" href="/static/css/main.css" />
+
+    <script type="module" src="/static/js/main.js"></script>
+
+    {{block "head" .}}
+    {{
+      end
+    }}
+  </head>
+  <body class="light admin">
+    <nav class="navigation-bar">
+      <a class="row" href="/">
+        <img src="/static/images/logo.png" alt="Site Logo" width="50" />
+        <h6>Admin</h6>
+      </a>
+      <div class="space"></div>
+      <div class="field label round border small max m l prefix">
+        <i>search</i>
+        <input type="text" name="" id="" />
+        <label for="">Search</label>
+      </div>
+      <div class="l max"></div>
+      <div class="max right-align row">
+        <label for="switch-theme" class="switch icon">
+          <input type="checkbox" id="switch-theme" />
+          <span>
+            <i>dark_mode</i>
+          </span>
+        </label>
+        <div class="l">
+          {{if eq .IsAuth 1}}
+          <a href="/logout" class="button no-wave">
+            <i>logout</i>
+            Logout
+          </a>
+          {{else}}
+          <a href="/login" class="button inverted no-wave">
+            <i>login</i>
+            Login
+          </a>
+          {{ end }}
+        </div>
+        <div class="s m">
+          <button class="circle" onclick="ui('#mobile-nav')">
+            <i>menu</i>
+          </button>
+
+          <dialog class="right no-overlay" id="mobile-nav">
+            <div class="row no-margin no-padding">
+              <div class="max left-align row">
+                <img src="/static/images/logo.png" alt="Site Logo" width="50" />
+                <h6>InnOne</h6>
+              </div>
+              <div class="max right-align">
+                <button class="circle" onclick="ui('#mobile-nav')">
+                  <i>close</i>
+                </button>
+              </div>
+            </div>
+
+            <div class="padding">
+              <div class="divider"></div>
+            </div>
+
+            <a class="item" href="/">
+              <p>Application</p>
+            </a>  
+            <a class="item active" href="/admin/dashboard"> 
+              <p>Dashboard</p>
+            </a> 
+            <a class="item" href="/admin/reservations/new">
+              <p>New Reservations</p>
+            </a> 
+            <a class="item" href="/admin/reservations/all">
+              <p>All Reservations</p>
+            </a> 
+            <a class="item" href="/admin/reservations/calendar">
+              <p>Reservations Calendar</p>
+            </a> 
+
+            <div class="pt5"></div>
+
+            {{ if eq .IsAuth 1}}
+            <a href="/logout" class="button responsive"> Logout </a>
+            {{ else }}
+            <a href="/login" class="button responsive"> Login </a>
+            {{ end }}
+          </dialog>
+        </div>
+      </div>
+    </nav>
+
+    <div class="large-space"></div>
+
+    <div class="row top-align no-space">
+        <nav class="l sidebar"> 
+            <a href="/">
+                <i>cottage</i>
+                Application
+            </a>
+            <a href="/admin/dashboard" class="active">
+                <i>dashboard</i>
+                Dashboard
+            </a>
+            <a href="/admin/reservations/new">
+                <i>receipt_long</i>
+                New Reservations
+            </a> 
+            <a href="/admin/reservations/all">
+                <i>view_list</i>
+                All Reservations
+            </a>   
+            <a href="/admin/reservations/calendar">
+                <i>calendar_month</i>
+                Calendar
+            </a>  
+        </nav>
+        <div class="max">
+          {{block "content" .}} {{ end }}
+        </div>
+    </div>
+        
+    {{block "js" .}} {{ end }}
+
+    <script type="text/javascript" src="/static/js/toast.js"></script>
+    <script>
+      window.onload = () => {
+        if ('{{if ne (index .Error) "" }}x{{end}}') {
+          showToast("{{index .Error}}");
+        } else if ('{{if ne (index .Flash) "" }}x{{end}}') {
+          showToast("{{index .Flash}}", null, "flash");
+        } else if ('{{if ne (index .Warning) "" }}x{{end}}') {
+          showToast("{{index .Warning}}", null, "warning");
+        }
+      };
+
+      let inputs = document.getElementsByTagName("input");
+      for (let input of inputs) {
+        input.autocomplete = "off";
+      }
+    </script>
+  </body>
+</html>
+{{ end }}

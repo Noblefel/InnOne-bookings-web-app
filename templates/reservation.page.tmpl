@@ -1,0 +1,150 @@
+{{template "base" .}} {{define "content"}}
+<section id="make-reservation">
+  <div class="grid middle-align">
+    <div class="s12 m12 l6 center-align">
+      <img src="/static/images/paper_vector.png" alt="Paper Vector" />
+    </div>
+    <div class="s12 m12 l6">
+      {{$res := index .Data "reservation"}}
+
+      <form action="/make-reservation" method="post" id="form-make-reservation">
+        <h3>Make Reservation</h3>
+
+        <p>
+          Room: <span class="font-600 red-text">{{$res.Room.RoomName}}</span>
+        </p>
+        <p>
+          Arrival Date:
+          <span class="font-600">{{index .StringMap "start_date"}}</span>
+        </p>
+        <p>
+          Departure Date:
+          <span class="font-600">{{index .StringMap "end_date"}}</span>
+        </p>
+        <p>Staying for <span class="font-600" id="staying-for"></span> days</p>
+
+        <div class="space"></div>
+
+        <input type="hidden" name="gorilla.csrf.Token" value="{{.CSRFToken}}" />
+        <input type="hidden" name="start_date" id="start_date" value="{{index .StringMap "start_date"}}" />
+        <input type="hidden" name="end_date" id="end_date" value="{{index .StringMap "end_date"}}" />
+        <input type="hidden" name="room_id" value="{{$res.Room.Id}}" />
+
+        <label for="first_name">First Name</label>
+        <div class="field border">
+          <input
+            type="text"
+            name="first_name"
+            id="first_name"
+            value="{{$res.FirstName}}"
+          />
+
+          {{with .Form.Errors.Get "first_name"}}
+          <span class="error">{{.}}</span>
+          {{end}}
+        </div>
+
+        <label for="last_name">Last Name</label>
+        <div class="field border">
+          <input
+            type="text"
+            name="last_name"
+            id="last_name"
+            value="{{$res.LastName}}"
+          />
+
+          {{with .Form.Errors.Get "last_name"}}
+          <span class="error">{{.}}</span>
+          {{end}}
+        </div>
+
+        <label for="email">Email</label>
+        <div class="field border prefix">
+          <i>mail</i>
+          <input type="email" name="email" id="email" value="{{$res.Email}}" />
+
+          {{with .Form.Errors.Get "email"}}
+          <span class="error">{{.}}</span>
+          {{end}}
+        </div>
+
+        <label for="phone">Phone Number</label>
+        <div class="field border prefix">
+          <i>phone</i>
+          <input type="text" name="phone" id="phone" value="{{$res.Phone}}" />
+
+          {{with .Form.Errors.Get "phone"}}
+          <span class="error">{{.}}</span>
+          {{end}}
+        </div>
+
+        <div class="pt2"></div>
+
+        <button
+          class="responsive no-margin"
+          id="make-reservation-button"
+          type="submit"
+        >
+          <i>search</i>
+          <span id="default"> Apply for Rseservation</span>
+          <span id="loading" class="display-none">
+            Applying... &nbsp;
+            <progress class="small circle white-text"></progress>
+          </span>
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div class="large-space"></div>
+{{end}} {{define "js"}}
+<script src="/static/js/reservation.js"></script>
+<script>
+  const form = document.getElementById("form-make-reservation"); 
+  
+  start_date = document.getElementById('start_date')
+  end_date = document.getElementById('end_date')
+
+  days = getDays(start_date, end_date)
+  setStayingFor(days)
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    // if(!validate()) return
+
+    form.submit();
+  });  
+
+  function validate() {
+    let data = new FormData(form);
+    let err = [];
+
+    if (!data.get("first_name").length) {
+      err.push("First name cannot be empty");
+    }
+
+    if (!data.get("last_name").length) {
+      err.push("Last name cannot be empty");
+    }
+
+    if (!data.get("email").length) {
+      err.push("Email cannot be empty");
+    }
+
+    if (!data.get("phone").length) {
+      err.push("Phone Number cannot be empty");
+    }
+ 
+    if (err.length) {
+      showToast(err);
+      return false;
+    }
+
+    return true;
+  }
+
+  const applyBtn = document.querySelector("#make-reservation-button");
+</script>
+{{end}}

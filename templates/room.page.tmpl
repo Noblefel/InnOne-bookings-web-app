@@ -1,0 +1,315 @@
+{{template "base" .}} {{define "content"}} {{ $res := index .Data "room" }}
+<section id="room">
+  <div class="grid">
+    <div class="s12 m12 l7">
+      <img src="/static/images/scenery.jpg" alt="House" class="header-img" />
+
+      <div class="image-row">
+        <img
+          src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&q=80&w=300&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Unsplash Image: https://unsplash.com/photos/white-bed-comforter-Id2IIl1jOB0"
+        />
+        <img
+          src="https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&q=80&w=300&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Unsplash Image: https://unsplash.com/photos/living-room-L7EwHkq1B2s"
+        />
+        <img
+          src="https://images.unsplash.com/photo-1600210491369-e753d80a41f3?auto=format&fit=crop&q=80&w=300&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Unsplash Image: https://unsplash.com/photos/white-and-black-wooden-table-with-chairs-js8AQlw71HA"
+        />
+        <img
+          src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=300&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Unsplash Image: https://unsplash.com/photos/architectural-photography-of-black-and-brown-hallway-ZtC4_rPCRXA"
+        />
+      </div>
+
+      <p>Image: Unsplash</p>
+
+      <h2 class="no-opacity">{{$res.RoomName}}</h2>
+
+      <div class="row wrap">
+        <div>
+          <div class="chip primary no-border">Best Deal</div>
+          <div class="chip amber black-text no-border font-600">Luxurious</div>
+        </div>
+        <div class="l m max"></div>
+        <div>
+          <div class="row">
+            <i>door_open</i>
+            <p class="large-text">
+              <span class="red-text font-600">5 rooms</span> left
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="space"></div>
+      <div class="divider"></div>
+
+      <div class="detail">
+        <p>
+          Welcome to the pinnacle of opulence, where luxury knows no bounds. The
+          Sovereign's Suite, the epitome of opulence and refinement. This
+          luxurious haven is designed for those who demand the very best in
+          accommodation, offering an experience that's truly fit for royalty.
+        </p>
+
+        <div class="pt2"></div>
+
+        <h6 class="no-opacity">Features & Amenities</h6>
+        <ul class="pl1">
+          <li>
+            <span class="font-700">Spacious Elegance</span>: Sovereign's Suite
+            is a vast expanse of refined living space, designed to make you feel
+            like nobility. With separate living and dining areas, it's perfect
+            for hosting guests or simply savoring your own grandeur.
+          </li>
+          <li>
+            <span class="font-700">Panoramic View</span>: Floor-to-ceiling
+            windows reveal sweeping, breathtaking vistas of the surrounding
+            landscape.
+          </li>
+          <li>
+            <span class="font-700">Sumptuous Bedding</span>: A king-sized bed,
+            draped in the finest linens, promises an unparalleled night's sleep.
+            It's your personal sanctuary of comfort.
+          </li>
+          <li>
+            <span class="font-700">Private Balcony</span>: Step out onto your
+            private balcony to enjoy the fresh air and take in the views. It's
+            the perfect spot for a morning coffee or a glass of wine at sunset.
+          </li>
+          <li>
+            <span class="font-700">Luxurous Bathroom</span>: The en-suite
+            bathroom is a masterpiece of design and functionality, featuring a
+            deep soaking tub, a spacious walk-in shower, and premium toiletries.
+          </li>
+        </ul>
+
+        <div class="pt2"></div>
+        <h6 class="no-opacity">Room Specifications</h6>
+        <div class="grid">
+          <div class="s12 m6 l6 spec">
+            <i>width</i>
+            <span>Approximately 1200 square feet (111.5 square meters)</span>
+          </div>
+          <div class="s12 m6 l6 spec">
+            <i>group</i>
+            <span>Ideal for 2 adults, but can accommodate up to 5 person</span>
+          </div>
+          <div class="s12 m6 l6 spec">
+            <i>king_bed</i>
+            <span
+              >One King-sized bed with premium mattress + 3 one-person bed</span
+            >
+          </div>
+          <div class="s12 m6 l6 spec">
+            <i>chair</i>
+            <span
+              >Furnished living area with plush seating, coffee table, and work
+              desk.</span
+            >
+          </div>
+          <div class="s12 m6 l6 spec">
+            <i>restaurant</i>
+            <span>A separate dining area with a dining table and chairs</span>
+          </div>
+          <div class="s12 m6 l6 spec">
+            <i>tv</i>
+            <span
+              >Large flat-screen TV with premium cable channels, high-speed
+              Wi-Fi, and a bedside control panel for lighting and room
+              temperature adjustments.</span
+            >
+          </div>
+          <div class="s12 m6 l6 spec">
+            <i>deck</i>
+            <span>A private balcony with outdoor seating</span>
+          </div>
+          <div class="s12 m6 l6 spec">
+            <i>checkroom</i>
+            <span
+              >A spacious wardrobe and storage areas. Including an in-room safe
+              to secure your belongings.
+            </span>
+          </div>
+          <div class="s12 m6 l6 spec">
+            <i>wine_bar</i>
+            <span
+              >Well-stocked mini bar with a selection of premium beverages and
+              snacks</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="s12 m12 l5">
+      <article class="payment-container">
+        <form onsubmit="checkAvailability(event)" method="post">
+          <input type="hidden" name="room_slug" id="room_slug" value="{{$res.Slug}}" />
+
+          <h6>Estimated Payment:</h6>
+          <p id="payment"></p>
+
+          <div class="grid no-margin pt1">
+            <div class="s6 m6 l6">
+              <div class="field border label">
+                <input type="date" name="start_date" id="from-date" />
+                <label for="from-date">From</label>
+              </div>
+            </div>
+            <div class="s6 m6 l6">
+              <div class="field border label">
+                <input type="date" name="end_date" id="to-date" />
+                <label for="to-date">To</label>
+              </div>
+            </div>
+          </div>
+
+          <p class="no-margin">
+            Staying for <span id="staying-for"></span> days
+          </p>
+
+          <div class="space"></div>
+
+          <div id="availability" class="display-none">
+            <div id="success" class="row center-align">
+              <i class="green-text">done</i>
+              <span class="green-text font-600">Room is available</span>
+            </div>
+            <div id="failed" class="row center-align">
+              <i class="red-text">close</i>
+              <span class="red-text font-600">Room is not available</span>
+            </div>
+          </div>
+
+          <div class="space"></div>
+
+          <button
+            class="responsive no-margin inverted no-wave"
+            id="check-availability-button"
+            type="submit"
+          >
+            <i>search</i>
+            <span id="default"> Check if available</span>
+            <span id="loading" class="display-none">
+              Checking... &nbsp;
+              <progress class="small circle"></progress>
+            </span>
+          </button>
+          <div class="space"></div>
+        </form>
+        <a
+          role="button"
+          id="book-button"
+          class="button responsive no-margin"
+          disabled="true"
+        >
+          Book
+        </a>
+      </article>
+    </div>
+  </div>
+</section>
+{{end}} {{define "js"}}
+<script src="/static/js/reservation.js"></script>
+<script>
+  const defaultCost = 1250;
+
+  let availability = document.querySelector("#availability");
+  let checkBtn = document.querySelector("#check-availability-button");
+  let bookBtn = document.querySelector("#book-button");
+
+  let from = document.querySelector("#from-date");
+  let to = document.querySelector("#to-date");
+
+  let slug = document.querySelector("#room_slug")
+
+  from.addEventListener("change", (event) => { 
+    const days = getDays(event.target, to);
+    setStayingFor(days);
+
+    calculateCost(days);
+  });
+
+  to.addEventListener("change", (event) => { 
+    const days = getDays(from, event.target);
+    setStayingFor(days);
+
+    calculateCost(days);
+  });
+
+  setDefaultDates(from, to);
+  setCost(defaultCost);
+
+  async function checkAvailability(event) {
+    event.preventDefault();
+    handleLoading(true);
+
+    if (!validateDates(from, to)) {
+      handleLoading(false)
+      showToast("Invalid Date");
+      setDefaultDates(from, to);
+      setCost(defaultCost);
+      return;
+    }
+
+    let formData = new FormData(event.target);
+    formData.append("gorilla.csrf.Token", "{{.CSRFToken}}");
+
+    try {
+      const res = await fetch(
+        "/check-availability/" + slug.value,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (!res.ok) {
+        const err = await res.json();
+        console.log("API Error", err);
+        showToast(err.message);
+        return;
+      }
+
+      handleResult(await res.json());
+    } catch (e) {
+      console.log("Unexpected Error", e);
+    } finally {
+      handleLoading(false);
+    }
+  }
+
+  function handleResult(res) {
+    let availability = document.querySelector("#availability");
+
+    availability.classList.remove("display-none");
+    if (res.data.available) {
+      availability.querySelector("#failed").classList.add("display-none");
+      availability.querySelector("#success").classList.remove("display-none");
+      bookBtn.removeAttribute("disabled");
+      bookBtn.setAttribute("href", `/rooms/${slug.value}/book?start_date=${from.value}&end_date=${to.value}`)
+      showToast(res.message, null, "success");
+    } else {
+      availability.querySelector("#success").classList.add("display-none");
+      availability.querySelector("#failed").classList.remove("display-none");
+      showToast(res.message);
+    }
+  }
+
+  function handleLoading(isFetching) {
+    if (isFetching) {
+      bookBtn.setAttribute("disabled", true);
+
+      checkBtn.setAttribute("disabled", true);
+      checkBtn.querySelector("#default").classList.add("display-none");
+      checkBtn.querySelector("#loading").classList.remove("display-none");
+    } else {
+      checkBtn.removeAttribute("disabled");
+      checkBtn.querySelector("#loading").classList.add("display-none");
+      checkBtn.querySelector("#default").classList.remove("display-none");
+    }
+  }
+</script>
+{{end}}

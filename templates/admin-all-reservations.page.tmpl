@@ -1,0 +1,51 @@
+{{template "admin" .}}
+
+{{define "content"}}
+
+<section id="admin-all-reservations">
+  <h3>All Reservations</h3>
+  <div class="divider responsive"></div>
+  {{$res := index .Data "reservations"}}
+  <div class="table-wrapper">
+    <table>
+      <colgroup>
+        <col>
+    </colgroup>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Last Name</th>
+          <th>Room</th>
+          <th>Arrival</th>
+          <th>Departure</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{ range $res}}
+        <tr>
+          <td>{{.Id}}</td>
+          <td>{{.LastName}}</td>
+          <td class="font-600 red-text">
+            <a href="/rooms/{{.Room.Slug}}">
+              {{.Room.RoomName}}
+            </a>
+          </td>
+          <td>{{humanDate .StartDate}}</td>
+          <td>{{humanDate .EndDate}}</td>
+          <td> 
+            <a href="/admin/reservations/{{.Id}}" class="button transparent circle">
+                <i>edit</i>
+                <div class="tooltip left">Edit</div>
+            </a> 
+          </td>
+        </tr>
+        {{
+          end
+        }}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{{ end }} 

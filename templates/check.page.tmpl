@@ -1,0 +1,158 @@
+{{template "base" .}} {{define "content"}}
+<section id="check-availability">
+  <div class="grid middle-align">
+    <div class="s m s12 m12 center-align">
+      <img src="/static/images/house_vector.png" alt="House Vector" />
+    </div>
+    <div class="s12 m12 l6">
+      <form onsubmit="checkAvailabilityAll(event)" method="post">
+        <h3>Check for availability</h3>
+        <p>See if some rooms are available on certain dates</p>
+
+        <div class="pt2"></div>
+
+        <label for="start_date">Arrival Date</label>
+        <div class="field border suffix">
+          <input type="date" name="start_date" id="start_date" />
+          <i>calendar_month</i>
+        </div>
+
+        <label for="end_date">Departure Date</label>
+        <div class="field border suffix">
+          <input type="date" name="end_date" id="end_date" />
+          <i>calendar_month</i>
+        </div>
+
+        <p>Staying for <span id="staying-for"></span> days</p>
+
+        <div class="pt2"></div>
+
+        <button
+          class="responsive no-margin"
+          id="check-availability-button"
+          type="submit"
+        >
+          <i>search</i>
+          <span id="default"> Check </span>
+          <span id="loading" class="display-none">
+            Checking... &nbsp;
+            <progress class="small circle white-text"></progress>
+          </span>
+        </button>
+      </form>
+    </div>
+    <div class="l l6 right-align">
+      <img src="/static/images/house_vector.png" alt="House Vector" />
+    </div>
+    <div class="s12 m12 l12">
+      <div id="availability" class="display-none">
+        <div id="success" class="row center-align">
+          <i class="green-text">done</i>
+          <h6 class="green-text font-600">Some rooms are available: </h6>
+        </div>
+        <div id="failed" class="row center-align">
+          <i class="red-text">close</i>
+          <h6 class="red-text font-600">Cannot find any available rooms</h6>
+        </div>
+
+        <div id="available-rooms" class="grid"> 
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="large-space"></div>
+{{end}} {{define "js"}}
+<script src="/static/js/reservation.js"></script>
+
+<script>
+  let availability = document.querySelector("#availability");
+  let checkBtn = document.querySelector("#check-availability-button");
+
+  let from = document.querySelector("#start_date");
+  let to = document.querySelector("#end_date");
+
+  from.addEventListener("change", (event) => {
+    availability.classList.add("display-none"); 
+    const days = getDays(event.target, to);
+    setStayingFor(days);
+    calculateCost(days);
+  });
+
+  to.addEventListener("change", (event) => {
+    availability.classList.add("display-none"); 
+    const days = getDays(from, event.target);
+    setStayingFor(days);
+    calculateCost(days);
+  });
+
+  setDefaultDates(from, to);
+
+  async function checkAvailabilityAll(event) {
+    event.preventDefault();
+    handleLoading(true);
+
+    if (!validateDates(from, to)) {
+      handleLoading(false)
+      showToast("Invalid Date");
+      setDefaultDates(from, to); 
+      return;
+    }
+
+    let formData = new FormData(event.target);
+    formData.append("gorilla.csrf.Token", "{{.CSRFToken}}");
+
+    try {
+      const res = await fetch("/check-availability-all", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        console.log("API Error", err);
+        showToast(err.message);
+        return;
+      }
+
+      handleResult(await res.json());
+    } catch (e) {
+      console.log("Unexpected Error", e);
+    } finally {
+      handleLoading(false);
+    }
+  }
+
+  function handleResult(res) {
+    let availability = document.querySelector("#availability"); 
+
+    availability.classList.remove("display-none"); 
+    if (res.data.rooms) {
+      availability.querySelector("#failed").classList.add("display-none");
+      console.log(res.data.rooms)
+      template = ``
+      res.data.rooms.forEach(e => template += `
+          <a class="room s12 m4 l3" href="/rooms/${e.slug}/book?start_date=${from.value}&end_date=${to.value}">
+            ${e.room_name}
+          </a>
+      ` );  
+      availability.querySelector("#available-rooms").innerHTML = template 
+    } else {
+      availability.querySelector("#success").classList.add("display-none");
+    }
+  }
+
+  function handleLoading(isFetching) {
+    if (isFetching) {
+      checkBtn.setAttribute("disabled", true);
+      checkBtn.querySelector("#default").classList.add("display-none");
+      checkBtn.querySelector("#loading").classList.remove("display-none");
+    } else {
+      checkBtn.removeAttribute("disabled");
+      checkBtn.querySelector("#loading").classList.add("display-none");
+      checkBtn.querySelector("#default").classList.remove("display-none");
+    }
+  }
+</script>
+{{end}}

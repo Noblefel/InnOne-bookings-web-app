@@ -1,0 +1,166 @@
+body {
+  --font: DMSans;
+
+  max-width: 1440px;
+  margin: auto;
+
+  &.light {
+    --primary: #d12e25;
+    --secondary: #ffcdd277;
+    --surface: white;
+    --body: rgb(245, 245, 245);
+    --active: rgba(139, 139, 139, 0.055);
+    --error: #f13329;
+    --success: #4caf50;
+  }
+
+  &.dark {
+    --primary: #af251d;
+    --secondary: #8064671e;
+    --secondary-container: #343b49;
+    --surface: #16171a;
+    --body: #101011;
+    --on-primary: rgb(202, 202, 202);
+    --on-surface: rgb(202, 202, 202);
+    --outline-variant: #454755;
+    --active: rgba(128, 128, 128, 0.082);
+    --error: #ad2821;
+    --success: #2f6b31;
+  }
+}
+
+button,
+.button {
+  &,
+  &.small,
+  &.large {
+    font-weight: 600;
+    border-radius: 7px;
+  }
+
+  &.inverted {
+    background-color: transparent;
+    color: var(--on-surface);
+    border: 1px solid var(--primary);
+    transition: 0.2s all ease;
+
+    &:hover {
+      background-color: var(--primary);
+      color: white;
+
+      & progress {
+        color: white;  
+      }
+    }
+  }
+
+  &::after {
+    background-image: radial-gradient(
+      circle,
+      rgba(65, 65, 65, 0.2) 1%,
+      transparent 1%
+    );
+  }
+}
+
+article {
+  box-shadow: rgba(0, 0, 0, 0.06) 0px 10px 36px 0px, rgba(0, 0, 0, 0.04) 0px 0px 0px 1px ;
+  background-color: var(--surface);
+}
+
+body.dark article {
+  background-color: var(--body);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+
+menu {  
+  margin-top: -1rem;
+  bottom: -1rem; 
+  max-height: 90vh;
+  background-color: var(--surface);
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;  
+  box-shadow: var(--elevate1);
+} 
+
+section {
+  padding: 1rem calc(0.2rem + 3.2vw); 
+}
+
+.icon-header {
+  display: flex;  
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+
+  & i {
+    border: 0;  
+    height: 3rem;
+    width: 3rem;
+    border-radius: 8px;
+  }
+
+  &> p {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+}
+
+
+.snackbar { 
+  display: flex;
+  flex-direction: column; 
+  align-items: start;
+  font-weight: 500;
+
+  &.warning {
+    background-color: rgba(255, 217, 0, 0.747);
+    color: black;
+    font-weight: 600;
+  } 
+
+  &.error {
+    color: white !important;
+  }
+
+  & p {
+    margin: 0.2rem 0;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  & ul {
+    padding-left: 1rem;
+
+    & li { 
+      margin-bottom: 0.4rem;
+    }
+  }
+} 
+
+body.dark .snackbar.success {
+  color: white;
+}
+
+.success {
+  background-color: var(--success);
+}
+
+.field {
+  & .error { 
+    padding-top: 0.3rem;
+    margin-left: -1rem;
+    font-size: .8rem;
+    font-weight: 600;
+  }
+}

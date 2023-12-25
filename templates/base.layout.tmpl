@@ -1,0 +1,250 @@
+{{ define "base" }}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/beercss@3.4.0/dist/cdn/beer.min.css"
+      rel="stylesheet"
+    />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/beercss@3.4.0/dist/cdn/beer.min.js"
+    ></script>
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.0.5/dist/cdn/material-dynamic-colors.min.js"
+    ></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.3/build/global/luxon.min.js"></script>
+
+    <link rel="stylesheet" href="/static/css/main.css" />
+
+    <script type="module" src="/static/js/main.js"></script>
+
+    {{block "head" .}}
+    {{
+      end
+    }}
+  </head>
+  <body class="light">
+    <nav class="navigation-bar">
+      <a class="row" href="/">
+        <img src="/static/images/logo.png" alt="Site Logo" width="50" />
+        <h6>InnOne</h6>
+      </a>
+      <div class="l pl5">
+        <a class="item active" href="/">Home</a>
+        <a class="item" href="/check-availability">Check</a>
+        <div class="item" onclick="ui('#nav-room-menu')">
+          Rooms
+          <span><i>arrow_drop_down</i></span>
+          <menu id="nav-room-menu">
+            <div class="grid no-space">
+              <a class="m6 l6 item" href="/rooms/sovereigns-suite"
+                >Sovereign's Suite</a
+              >
+              <a class="m6 l6 item" href="/rooms/queens-lounge"
+                >Queen's Lounge</a
+              >
+              <a class="m6 l6 item" href="/rooms/lords-lair">Lords Lair</a>
+              <a class="m6 l6 item" href="/rooms/duchess-domain"
+                >Duchess Domain</a
+              >
+              <a class="m6 l6 item" href="/rooms/prince-manor">Prince Manor</a>
+              <a class="m6 l6 item" href="/rooms/princess-stay"
+                >Princess Stay</a
+              >
+              <a class="m6 l6 item" href="/rooms/knights-quarter"
+                >Knight's Quarter</a
+              >
+              <a class="m6 l6 item" href="/rooms/heralds-retreat"
+                >Heralds Retreat</a
+              >
+            </div>
+          </menu>
+        </div>
+        {{if eq .IsAuth 1 }}
+        <a href="/admin/dashboard" class="item">
+          Admin
+        </a>
+        {{end}}
+      </div>
+      <div class="max right-align row">
+        <label for="switch-theme" class="switch icon">
+          <input type="checkbox" id="switch-theme" />
+          <span>
+            <i>dark_mode</i>
+          </span>
+        </label>
+        <div class="l">
+          {{if eq .IsAuth 1}}
+          <a href="/logout" class="button no-wave">
+            <i>logout</i>
+            Logout
+          </a>
+          {{else}}
+          <a href="/login" class="button inverted no-wave">
+            <i>login</i>
+            Login
+          </a>
+          {{ end }}
+        </div>
+        <div class="s m">
+          <button class="circle" onclick="ui('#mobile-nav')">
+            <i>menu</i>
+          </button>
+
+          <dialog class="right no-overlay" id="mobile-nav">
+            <div class="row no-margin no-padding">
+              <div class="max left-align row">
+                <img src="/static/images/logo.png" alt="Site Logo" width="50" />
+                <h6>InnOne</h6>
+              </div>
+              <div class="max right-align">
+                <button class="circle" onclick="ui('#mobile-nav')">
+                  <i>close</i>
+                </button>
+              </div>
+            </div>
+
+            <div class="padding">
+              <div class="divider"></div>
+            </div>
+
+            <a class="item active" href="/">
+              <p>Home</p>
+            </a>
+            <a class="item" href="/check-availability">
+              <p>Check Availability</p>
+            </a>
+            <div class="item rooms" onclick="ui('#mobile-nav-rooms')">
+              <p>Rooms</p>
+              <i class="right-align">chevron_right</i>
+            </div>
+
+            <div class="grid no-margin" id="mobile-nav-rooms">
+              <a class="m6 s6 item" href="/rooms/sovereigns-suite"
+                >Sovereign's Suite</a
+              >
+              <a class="m6 s6 item" href="/rooms/queens-lounge"
+                >Queen's Lounge</a
+              >
+              <a class="m6 s6 item" href="/rooms/lords-lair">Lords Lair</a>
+              <a class="m6 s6 item" href="/rooms/duchess-domain"
+                >Duchess Domain</a
+              >
+              <a class="m6 s6 item" href="/rooms/prince-manor">Prince Manor</a>
+              <a class="m6 s6 item" href="/rooms/princess-stay"
+                >Princess Stay</a
+              >
+              <a class="m6 s6 item" href="/rooms/knights-quarter"
+                >Knight's Quarter</a
+              >
+              <a class="m6 s6 item" href="/rooms/heralds-retreat"
+                >Heralds Retreat</a
+              >
+            </div>
+
+            {{if eq .IsAuth 1 }}
+            <a href="/admin/dashboard" class="item">
+              <p>Admin</p>
+            </a>
+            {{end}}
+
+            <div class="pt5"></div>
+
+            {{ if eq .IsAuth 1}}
+            <a href="/logout" class="button responsive"> Logout </a>
+            {{ else }}
+            <a href="/login" class="button responsive"> Login </a>
+            {{ end }}
+          </dialog>
+        </div>
+      </div>
+    </nav>
+
+    <div class="large-space"></div>
+
+    <main class="padding">{{block "content" .}} {{ end }}</main>
+
+    <footer class="grid">
+      <div class="s12 m6 l5">
+        <div class="row">
+          <img src="/static/images/logo.png" alt="Site Logo" class="large" />
+          <h6>InnOne</h6>
+        </div>
+        <p class="medium-line">
+          Manage your reservations, dine in the grand hall, and schedule
+          activities, all with a few clicks. Navigate the fiery challenges of
+          planning a stay with our InnOne web app
+        </p>
+      </div>
+      <div class="l l1"></div>
+      <div class="s6 m6 l2 links">
+        <p>Rooms</p>
+        <a href="/rooms/sovereigns-suite">Sovereign's Suite</a>
+        <a href="/rooms/queens-lounge">Queen's Lounge</a>
+        <a href="/rooms/lords-lair">Lords Lair</a>
+        <a href="/rooms/duchess-domain">Duchess Domain</a>
+        <a href="/rooms/prince-manor">Prince Manor</a>
+        <a href="/rooms/princess-stay">Princess Stay</a>
+        <a href="/rooms/knights-quarter">Knight's Quarter</a>
+        <a href="/rooms/heralds-retreat">Heralds Retreat</a>
+      </div>
+      <div class="s6 m6 l2 links">
+        <p>Home</p>
+        <a href="#offer">Offer</a>
+        <a href="#benefits">Benefits</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="s6 m6 l2 links">
+        <p>Other</p>
+        <a>Terms & Services</a>
+        <a>Privacy Policy</a>
+        <a>Help</a>
+      </div>
+      <div class="s12 m12 l12">
+        <div class="divider"></div>
+        <div class="row center-align pt2">
+          <a href="https://github.com/Noblefel" target="_blank">
+            <i class="fa fa-github"></i>
+          </a>
+          <a>
+            <i class="fa fa-facebook"></i>
+          </a>
+          <a>
+            <i class="fa fa-twitter"></i>
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    {{block "js" .}} {{ end }}
+
+    <script type="text/javascript" src="/static/js/toast.js"></script>
+    <script>
+      window.onload = () => {
+        if ('{{if ne (index .Error) "" }}x{{end}}') {
+          showToast("{{index .Error}}");
+        } else if ('{{if ne (index .Flash) "" }}x{{end}}') {
+          showToast("{{index .Flash}}", null, "flash");
+        } else if ('{{if ne (index .Warning) "" }}x{{end}}') {
+          showToast("{{index .Warning}}", null, "warning");
+        }
+      };
+
+      let inputs = document.getElementsByTagName("input");
+      for (let input of inputs) {
+        input.autocomplete = "off";
+      }
+    </script>
+  </body>
+</html>
+{{ end }}
