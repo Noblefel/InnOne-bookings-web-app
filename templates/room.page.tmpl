@@ -25,7 +25,7 @@
 
       <p>Image: Unsplash</p>
 
-      <h2 class="no-opacity">{{$res.RoomName}}</h2>
+      <h2 class="no-opacity">{{ $res.RoomName }}</h2>
 
       <div class="row wrap">
         <div>
@@ -48,10 +48,10 @@
 
       <div class="detail">
         <p>
-          Welcome to the pinnacle of opulence, where luxury knows no bounds. The
-          Sovereign's Suite, the epitome of opulence and refinement. This
-          luxurious haven is designed for those who demand the very best in
-          accommodation, offering an experience that's truly fit for royalty.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+          tempus orci eget urna dapibus faucibus. Integer iaculis nunc
+          ullamcorper, tempor erat at, egestas libero. Ut non ex elementum,
+          feugiat ante sit amet
         </p>
 
         <div class="pt2"></div>
@@ -59,30 +59,31 @@
         <h6 class="no-opacity">Features & Amenities</h6>
         <ul class="pl1">
           <li>
-            <span class="font-700">Spacious Elegance</span>: Sovereign's Suite
-            is a vast expanse of refined living space, designed to make you feel
-            like nobility. With separate living and dining areas, it's perfect
-            for hosting guests or simply savoring your own grandeur.
+            <span class="font-700">Spacious Elegance</span>: tincidunt neque.
+            Sed vestibulum in turpis ut sagittis. Nunc metus nisl, vehicula ac
+            sagittis id, egestas et urna
           </li>
           <li>
-            <span class="font-700">Panoramic View</span>: Floor-to-ceiling
-            windows reveal sweeping, breathtaking vistas of the surrounding
-            landscape.
+            <span class="font-700">Panoramic View</span>: Pellentesque nisl
+            purus, viverra vel lectus non, luctus commodo nibh. Quisque
+            sollicitudin erat non ligula laoreet rutrum. Aliquam vulputate
+            fringilla enim nec condimentum.
           </li>
           <li>
-            <span class="font-700">Sumptuous Bedding</span>: A king-sized bed,
-            draped in the finest linens, promises an unparalleled night's sleep.
-            It's your personal sanctuary of comfort.
+            <span class="font-700">Sumptuous Bedding</span>: Donec dapibus lacus
+            dolor, non pharetra risus sodales quis. Sed porttitor libero sed
+            rhoncus tempor.
           </li>
           <li>
-            <span class="font-700">Private Balcony</span>: Step out onto your
-            private balcony to enjoy the fresh air and take in the views. It's
-            the perfect spot for a morning coffee or a glass of wine at sunset.
+            <span class="font-700">Private Balcony</span>: Praesent mollis
+            faucibus velit, eget pretium libero pharetra sit amet. Duis porta
+            ultrices lorem. Ut libero massa, laoreet vitae laoreet vel
           </li>
           <li>
-            <span class="font-700">Luxurous Bathroom</span>: The en-suite
-            bathroom is a masterpiece of design and functionality, featuring a
-            deep soaking tub, a spacious walk-in shower, and premium toiletries.
+            <span class="font-700">Luxurous Bathroom</span>: venenatis at nisl.
+            Duis mattis sollicitudin risus, ut lobortis sem malesuada eget.
+            Etiam elementum in tellus ultrices cursus. Fusce augue nisi, viverra
+            at nibh vel, iaculis ultrices mauris.
           </li>
         </ul>
 
@@ -146,7 +147,12 @@
     <div class="s12 m12 l5">
       <article class="payment-container">
         <form onsubmit="checkAvailability(event)" method="post">
-          <input type="hidden" name="room_slug" id="room_slug" value="{{$res.Slug}}" />
+          <input
+            type="hidden"
+            name="room_slug"
+            id="room_slug"
+            value="{{ $res.Slug }}"
+          />
 
           <h6>Estimated Payment:</h6>
           <p id="payment"></p>
@@ -211,7 +217,7 @@
     </div>
   </div>
 </section>
-{{end}} {{define "js"}}
+{{ end }} {{define "js"}}
 <script src="/static/js/reservation.js"></script>
 <script>
   const defaultCost = 1250;
@@ -223,16 +229,16 @@
   let from = document.querySelector("#from-date");
   let to = document.querySelector("#to-date");
 
-  let slug = document.querySelector("#room_slug")
+  let slug = document.querySelector("#room_slug");
 
-  from.addEventListener("change", (event) => { 
+  from.addEventListener("change", (event) => {
     const days = getDays(event.target, to);
     setStayingFor(days);
 
     calculateCost(days);
   });
 
-  to.addEventListener("change", (event) => { 
+  to.addEventListener("change", (event) => {
     const days = getDays(from, event.target);
     setStayingFor(days);
 
@@ -247,7 +253,7 @@
     handleLoading(true);
 
     if (!validateDates(from, to)) {
-      handleLoading(false)
+      handleLoading(false);
       showToast("Invalid Date");
       setDefaultDates(from, to);
       setCost(defaultCost);
@@ -258,13 +264,10 @@
     formData.append("gorilla.csrf.Token", "{{.CSRFToken}}");
 
     try {
-      const res = await fetch(
-        "/check-availability/" + slug.value,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const res = await fetch("/check-availability/" + slug.value, {
+        method: "POST",
+        body: formData,
+      });
 
       if (!res.ok) {
         const err = await res.json();
@@ -289,7 +292,10 @@
       availability.querySelector("#failed").classList.add("display-none");
       availability.querySelector("#success").classList.remove("display-none");
       bookBtn.removeAttribute("disabled");
-      bookBtn.setAttribute("href", `/rooms/${slug.value}/book?start_date=${from.value}&end_date=${to.value}`)
+      bookBtn.setAttribute(
+        "href",
+        `/rooms/${slug.value}/book?start_date=${from.value}&end_date=${to.value}`
+      );
       showToast(res.message, null, "success");
     } else {
       availability.querySelector("#success").classList.add("display-none");
@@ -312,4 +318,4 @@
     }
   }
 </script>
-{{end}}
+{{ end }}
