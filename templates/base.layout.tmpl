@@ -70,11 +70,9 @@
             </div>
           </menu>
         </div>
-        {{if eq .IsAuth 1 }}
-        <a href="/admin/dashboard" class="item">
-          Admin
-        </a>
-        {{end}}
+        {{if ne .AuthId 0 }}
+        <a href="/admin/dashboard" class="item"> Admin </a>
+        {{ end }}
       </div>
       <div class="max right-align row">
         <label for="switch-theme" class="switch icon">
@@ -84,7 +82,7 @@
           </span>
         </label>
         <div class="l">
-          {{if eq .IsAuth 1}}
+          {{if ne .AuthId 0}}
           <a href="/logout" class="button no-wave">
             <i>logout</i>
             Logout
@@ -152,15 +150,15 @@
               >
             </div>
 
-            {{if eq .IsAuth 1 }}
+            {{if ne .AuthId 0 }}
             <a href="/admin/dashboard" class="item">
               <p>Admin</p>
             </a>
-            {{end}}
+            {{ end }}
 
             <div class="pt5"></div>
 
-            {{ if eq .IsAuth 1}}
+            {{ if ne .AuthId 0}}
             <a href="/logout" class="button responsive"> Logout </a>
             {{ else }}
             <a href="/login" class="button responsive"> Login </a>
@@ -235,8 +233,6 @@
           showToast("{{index .Error}}");
         } else if ('{{if ne (index .Flash) "" }}x{{end}}') {
           showToast("{{index .Flash}}", null, "flash");
-        } else if ('{{if ne (index .Warning) "" }}x{{end}}') {
-          showToast("{{index .Warning}}", null, "warning");
         }
       };
 

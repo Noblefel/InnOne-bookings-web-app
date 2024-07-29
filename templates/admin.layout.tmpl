@@ -54,7 +54,7 @@
           </span>
         </label>
         <div class="l">
-          {{if eq .IsAuth 1}}
+          {{if ne .AuthId 0}}
           <a href="/logout" class="button no-wave">
             <i>logout</i>
             Logout
@@ -90,23 +90,23 @@
 
             <a class="item" href="/">
               <p>Application</p>
-            </a>  
-            <a class="item active" href="/admin/dashboard"> 
+            </a>
+            <a class="item active" href="/admin/dashboard">
               <p>Dashboard</p>
-            </a> 
+            </a>
             <a class="item" href="/admin/reservations/new">
               <p>New Reservations</p>
-            </a> 
+            </a>
             <a class="item" href="/admin/reservations/all">
               <p>All Reservations</p>
-            </a> 
+            </a>
             <a class="item" href="/admin/reservations/calendar">
               <p>Reservations Calendar</p>
-            </a> 
+            </a>
 
             <div class="pt5"></div>
 
-            {{ if eq .IsAuth 1}}
+            {{ if ne .AuthId 0}}
             <a href="/logout" class="button responsive"> Logout </a>
             {{ else }}
             <a href="/login" class="button responsive"> Login </a>
@@ -119,33 +119,31 @@
     <div class="large-space"></div>
 
     <div class="row top-align no-space">
-        <nav class="l sidebar"> 
-            <a href="/">
-                <i>cottage</i>
-                Application
-            </a>
-            <a href="/admin/dashboard" class="active">
-                <i>dashboard</i>
-                Dashboard
-            </a>
-            <a href="/admin/reservations/new">
-                <i>receipt_long</i>
-                New Reservations
-            </a> 
-            <a href="/admin/reservations/all">
-                <i>view_list</i>
-                All Reservations
-            </a>   
-            <a href="/admin/reservations/calendar">
-                <i>calendar_month</i>
-                Calendar
-            </a>  
-        </nav>
-        <div class="max">
-          {{block "content" .}} {{ end }}
-        </div>
+      <nav class="l sidebar">
+        <a href="/">
+          <i>cottage</i>
+          Application
+        </a>
+        <a href="/admin/dashboard" class="active">
+          <i>dashboard</i>
+          Dashboard
+        </a>
+        <a href="/admin/reservations/new">
+          <i>receipt_long</i>
+          New Reservations
+        </a>
+        <a href="/admin/reservations/all">
+          <i>view_list</i>
+          All Reservations
+        </a>
+        <a href="/admin/reservations/calendar">
+          <i>calendar_month</i>
+          Calendar
+        </a>
+      </nav>
+      <div class="max">{{block "content" .}} {{ end }}</div>
     </div>
-        
+
     {{block "js" .}} {{ end }}
 
     <script type="text/javascript" src="/static/js/toast.js"></script>
@@ -155,8 +153,6 @@
           showToast("{{index .Error}}");
         } else if ('{{if ne (index .Flash) "" }}x{{end}}') {
           showToast("{{index .Flash}}", null, "flash");
-        } else if ('{{if ne (index .Warning) "" }}x{{end}}') {
-          showToast("{{index .Warning}}", null, "warning");
         }
       };
 

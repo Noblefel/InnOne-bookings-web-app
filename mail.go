@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Noblefel/InnOne-bookings-web-app/internal/models"
+	"github.com/Noblefel/InnOne-bookings-web-app/internal/types"
 	mail "github.com/xhit/go-simple-mail/v2"
 )
 
@@ -20,7 +20,7 @@ func listenForMail() {
 	}()
 }
 
-func sendMessage(m models.MailData) {
+func sendMessage(m types.MailData) {
 	server := mail.NewSMTPClient()
 	server.Host = "localhost"
 	server.Port = 1025
@@ -30,7 +30,7 @@ func sendMessage(m models.MailData) {
 
 	client, err := server.Connect()
 	if err != nil {
-		app.ErrorLog.Println(err)
+		log.Println(err)
 		return
 	}
 
@@ -42,7 +42,7 @@ func sendMessage(m models.MailData) {
 	} else {
 		data, err := os.ReadFile(fmt.Sprintf("./email-templates/%s", m.Template))
 		if err != nil {
-			app.ErrorLog.Println(err)
+			log.Println(err)
 			return
 		}
 
@@ -56,8 +56,8 @@ func sendMessage(m models.MailData) {
 
 	if err = email.Send(client); err != nil {
 		log.Println(err)
-	} else {
-		log.Println("Email sent!")
+		return
 	}
 
+	log.Println("Email sent!")
 }

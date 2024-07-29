@@ -5,7 +5,18 @@
 <section id="admin-show-reservation">
   <h3>Show Reservations</h3>
   <div class="divider responsive"></div>
-  {{$res := index .Data "reservation"}}
+  {{$res := index .Page "reservation"}}
+  {{$errors := index .Page "errors"}}
+
+  {{if $errors}}
+  <div class="padding red7 white-text mb1">
+    {{range $e := $errors}}
+    {{range $e}}
+    <li>{{.}}</li>
+    {{ end }}
+    {{ end }}
+  </div>
+  {{ end }}
 
   <form
     action="/admin/reservations/2/edit"
@@ -33,7 +44,7 @@
 
         <div class="space"></div>
 
-        <input type="hidden" name="gorilla.csrf.Token" value="{{.CSRFToken}}" />
+        <input type="hidden" name="csrf" value="{{index .Page "csrf"}}" />
 
         <input
           type="hidden"
@@ -56,10 +67,6 @@
             id="first_name"
             value="{{ $res.FirstName }}"
           />
-
-          {{with .Form.Errors.Get "first_name"}}
-          <span class="error">{{.}}</span>
-          {{ end }}
         </div>
 
         <label for="last_name">Last Name</label>
@@ -70,10 +77,6 @@
             id="last_name"
             value="{{ $res.LastName }}"
           />
-
-          {{with .Form.Errors.Get "last_name"}}
-          <span class="error">{{.}}</span>
-          {{ end }}
         </div>
 
         <label for="email">Email</label>
@@ -85,20 +88,12 @@
             id="email"
             value="{{ $res.Email }}"
           />
-
-          {{with .Form.Errors.Get "email"}}
-          <span class="error">{{.}}</span>
-          {{ end }}
         </div>
 
         <label for="phone">Phone Number</label>
         <div class="field border prefix">
           <i>phone</i>
           <input type="text" name="phone" id="phone" value="{{ $res.Phone }}" />
-
-          {{with .Form.Errors.Get "phone"}}
-          <span class="error">{{.}}</span>
-          {{ end }}
         </div>
       </div>
       <div class="s12 m12 l4">
@@ -129,7 +124,11 @@
             {{ end }}
           </div>
           <div class="space"></div>
-          <button class="responsive no-margin" type="button" onclick="deleteReservation()">
+          <button
+            class="responsive no-margin"
+            type="button"
+            onclick="deleteReservation()"
+          >
             <i>delete</i>
             Delete
           </button>
@@ -145,7 +144,7 @@
     class="display-none"
     id="form-approve-reservation"
   >
-    <input type="hidden" name="gorilla.csrf.Token" value="{{.CSRFToken}}" />
+    <input type="hidden" name="csrf" value="{{index .Page "csrf"}}" />
     <input type="hidden" name="is-approved" value="{{ $res.Processed }}" />
   </form>
 
@@ -156,7 +155,7 @@
     class="display-none"
     id="form-delete-reservation"
   >
-    <input type="hidden" name="gorilla.csrf.Token" value="{{.CSRFToken}}" /> 
+    <input type="hidden" name="csrf" value="{{index .Page "csrf"}}" />
   </form>
 </section>
 
@@ -210,7 +209,13 @@
   }
 
   function approveReservation(isApproved) {
-    if (!confirm(`Are you sure to ${isApproved ? "unapprove" : "approve"} this reservation?`)) {
+    if (
+      !confirm(
+        `Are you sure to ${
+          isApproved ? "unapprove" : "approve"
+        } this reservation?`
+      )
+    ) {
       return;
     }
 

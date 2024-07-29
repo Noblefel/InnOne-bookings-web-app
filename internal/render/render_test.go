@@ -1,77 +1,68 @@
 package render
 
 import (
-	"net/http"
+	"os"
+	"strings"
 	"testing"
+	"testing/fstest"
 
-	"github.com/Noblefel/InnOne-bookings-web-app/internal/models"
+	"github.com/Noblefel/InnOne-bookings-web-app/internal/types"
 )
 
-func TestAddDefaultData(t *testing.T) {
-	var td models.TemplateData
+var pageTemplate = []byte(`{{template "base" .}}{{define "body"}}{{index .Page "key"}}{{end}}`)
+var layoutTemplate = []byte(`{{define "base"}}{{block "body" .}}{{end}}---{{end}}`)
 
-	r, err := getSession()
-	if err != nil {
-		t.Error(err)
+func TestCacheRenderer(t *testing.T) {
+	fsys := fstest.MapFS{
+		"a.page.tmpl":   {Data: pageTemplate},
+		"b.layout.tmpl": {Data: layoutTemplate},
 	}
 
-	session.Put(r.Context(), "flash", "test")
-	result := AddDefaultData(&td, r)
+	r, err := New(fsys)
+	if err != nil {
+		t.Fatal(err)
+	}
 
-	if len(result.Flash) == 0 {
-		t.Error("Flash value not found in session")
+	var sb strings.Builder
+	data := types.TemplateData{Page: map[string]any{"key": "abc"}}
+
+	if err := r.View(&sb, "a.page.tmpl", &data); err != nil {
+		t.Fatal(err)
+	}
+
+	want := "abc---"
+	if sb.String() != want {
+		t.Errorf("incorrect template result, want %q, got %q", want, sb.String())
 	}
 }
 
-func TestRenderTemplate(t *testing.T) {
-	pathToTemplates = "./../../templates"
-
-	tc, err := CreateTemplateCache()
+func TestNoCacheRenderer(t *testing.T) {
+	dir := t.TempDir()
+	page, err := os.Create(dir + "/a.page.tmpl")
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
+	page.Write(pageTemplate)
+	page.Close()
 
-	app.TemplateCache = tc
-
-	r, err := getSession()
+	layout, err := os.Create(dir + "/b.layout.tmpl")
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
+	}
+	layout.Write(layoutTemplate)
+	layout.Close()
+
+	r := NewNoCache(dir)
+
+	var sb strings.Builder
+	data := types.TemplateData{Page: map[string]any{"key": "abc"}}
+
+	if err := r.View(&sb, "a.page.tmpl", &data); err != nil {
+		t.Fatal(err)
 	}
 
-	err = Template(&myWriter{}, r, "home.page.tmpl", &models.TemplateData{})
-	if err != nil {
-		t.Error(err)
+	want := "abc---"
+	if sb.String() != want {
+		t.Errorf("incorrect template result, want %q, got %q", want, sb.String())
 	}
-
-	err = Template(&myWriter{}, r, "didnt-exist.page.tmpl", &models.TemplateData{})
-	if err == nil {
-		t.Error("Rendered template that didnt exists")
-	}
-
-}
-
-func TestCreateTemplateCache(t *testing.T) {
-	pathToTemplates = "./../../templates"
-
-	_, err := CreateTemplateCache()
-	if err != nil {
-		t.Error(err)
-	}
-}
-
-func getSession() (*http.Request, error) {
-	r, err := http.NewRequest("GET", "/", nil)
-	if err != nil {
-		return nil, err
-	}
-
-	ctx, _ := session.Load(r.Context(), r.Header.Get("X-Session"))
-
-	r = r.WithContext(ctx)
-
-	return r, nil
-}
-
-func TestNewTemplate(t *testing.T) {
-	NewRenderer(app)
 }

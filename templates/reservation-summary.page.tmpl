@@ -1,5 +1,5 @@
 {{template "base" .}} {{define "content"}}
-{{ $res := index .Data "reservation" }}
+{{ $res := index .Page "reservation" }}
 <section id="reservation-summary">
   <h6>Reservation Summary</h6>
   <div class="table-wrapper">
@@ -18,8 +18,8 @@
         <tr>
           <td class="name">{{$res.FirstName}}</td>
           <th class="red-text">{{$res.Room.RoomName}}</th>
-          <td>{{index .StringMap "start_date"}}</td>
-          <td>{{index .StringMap "end_date"}}</td>
+          <td>{{humanDate $res.StartDate}}</td>
+          <td>{{humanDate $res.EndDate}}</td>
           <td>{{$res.Email}}</td>
           <td>{{$res.Phone}}</td>
         </tr> 

@@ -101,7 +101,7 @@
     }
 
     let formData = new FormData(event.target);
-    formData.append("gorilla.csrf.Token", "{{.CSRFToken}}");
+    formData.append("csrf", `{{index .Page "csrf"}}`);
 
     try {
       const res = await fetch("/check-availability-all", {

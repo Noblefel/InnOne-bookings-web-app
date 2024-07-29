@@ -1,45 +1,46 @@
 {{ template "base" .}}
 {{ define "content"}}
+
 <section id="login">
-    <article>
-        <form id="form-login" action="/login" method="post"> 
-            <img src="/static/images/logo.png" alt="Site Logo" width="75" class="center" />
-            <div class="space"></div>
-            <input type="hidden" name="gorilla.csrf.Token" value="{{.CSRFToken}}" />
+  <article>
+    {{$errors := index .Page "errors"}}
+    {{if $errors}}
+    <div class="padding red7 white-text mb1">
+      {{range $e := $errors}}
+      {{range $e}}
+      <li>{{.}}</li>
+      {{ end }}
+      {{ end }}
+    </div>
+    {{ end }}
 
-            <label for="email">Email</label>
-            <div class="field border">
-                <input type="text" id="email" name="email" value="test@example.com">
-                {{with .Form.Errors.Get "email"}}
-                <span class="error">{{.}}</span> 
-                {{end}} 
-            </div>
-            <div class="space"></div>
-             
-            <label for="password">Password</label>
-            <div class="field border">
-                <input type="password" id="password" name="password" value="password">
-                {{with .Form.Errors.Get "password"}}
-                <span class="error">{{.}}</span> 
-                {{end}} 
-            </div>
-            <div class="large-space"></div>
+    <form id="form-login" action="/login" method="post">
+      <img
+        src="/static/images/logo.png"
+        alt="Site Logo"
+        width="75"
+        class="center"
+      />
+      <div class="space"></div>
+      <input type="hidden" name="csrf" value="{{index .Page "csrf"}}" />
 
-            <button class="no-margin responsive">
-                Login
-                <i>login</i>
-            </button>
-        </form>
-    </article>
+      <label for="email">Email</label>
+      <div class="field border">
+        <input type="text" id="email" name="email" value="test@example.com" />
+      </div>
+      <div class="space"></div>
+
+      <label for="password">Password</label>
+      <div class="field border">
+        <input type="password" id="password" name="password" value="password" />
+      </div>
+      <div class="large-space"></div>
+
+      <button class="no-margin responsive">
+        Login
+        <i>login</i>
+      </button>
+    </form>
+  </article>
 </section>
-{{end}}
-
-{{define "js"}}
-<script>
-    const form = document.getElementById("form-login")
-    form.addEventListener("submit", (event) => {
-    event.preventDefault(); 
-    form.submit();
-  });  
-</script>
-{{end}}
+{{ end }}

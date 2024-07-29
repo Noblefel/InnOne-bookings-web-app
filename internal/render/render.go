@@ -3,109 +3,88 @@ package render
 import (
 	"bytes"
 	"errors"
-	"log"
-	"net/http"
-	"path/filepath"
+	"io"
+	"io/fs"
+	"os"
 	"text/template"
 	"time"
 
-	"github.com/Noblefel/InnOne-bookings-web-app/internal/config"
-	"github.com/Noblefel/InnOne-bookings-web-app/internal/helpers"
-	"github.com/Noblefel/InnOne-bookings-web-app/internal/models"
-	"github.com/gorilla/csrf"
+	"github.com/Noblefel/InnOne-bookings-web-app/internal/types"
 )
 
-var functions = template.FuncMap{
-	"humanDate": HumanDate,
+var funcs = template.FuncMap{
+	"humanDate": func(t time.Time) string {
+		return t.Format("2006-01-02")
+	},
 }
 
-var app *config.AppConfig
-var pathToTemplates string = "./templates"
-
-func NewRenderer(ac *config.AppConfig) {
-	app = ac
+type Renderer interface {
+	View(w io.Writer, tmpl string, data *types.TemplateData) error
 }
 
-func HumanDate(t time.Time) string {
-	return t.Format("2006-01-02")
-}
+type CacheRenderer struct{ cache map[string]*template.Template }
 
-func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
-	td.Flash = app.Session.PopString(r.Context(), "flash")
-	td.Warning = app.Session.PopString(r.Context(), "warning")
-	td.Error = app.Session.PopString(r.Context(), "error")
-	td.CSRFToken = csrf.Token(r)
-	if helpers.IsAuthenticated(r) {
-		td.IsAuth = 1
-	}
-	return td
-}
-
-func Template(w http.ResponseWriter, r *http.Request, filename string, td *models.TemplateData) error {
-	var templateCache map[string]*template.Template
-
-	if app.UseCache {
-		templateCache = app.TemplateCache
-	} else {
-		templateCache, _ = CreateTemplateCache()
+func New(fsys fs.FS) (*CacheRenderer, error) {
+	matches, err := fs.Glob(fsys, "*.page.tmpl")
+	if err != nil {
+		return nil, err
 	}
 
-	//get requested template from cache
-	template, ok := templateCache[filename]
+	cache := make(map[string]*template.Template)
+
+	for _, m := range matches {
+		t, err := template.New(m).Funcs(funcs).ParseFS(fsys, m, "*.layout.tmpl")
+		if err != nil {
+			return nil, err
+		}
+
+		cache[m] = t
+	}
+
+	return &CacheRenderer{cache}, nil
+}
+
+func (r *CacheRenderer) View(w io.Writer, tmpl string, data *types.TemplateData) error {
+	t, ok := r.cache[tmpl]
 	if !ok {
-		return errors.New("Cant get template from template cache")
+		return errors.New("no template found")
 	}
 
-	buf := new(bytes.Buffer)
-
-	td = AddDefaultData(td, r)
-
-	err := template.Execute(buf, td)
-	if err != nil {
-		return err
-	}
-
-	// render the template
-	_, err = buf.WriteTo(w)
-	if err != nil {
-		log.Println(err)
-		return err
-	}
-
-	return nil
+	return write(w, t, data)
 }
 
-func CreateTemplateCache() (map[string]*template.Template, error) {
-	cache := map[string]*template.Template{}
+type NoCacheRenderer struct{ dir string }
 
-	// get all file named *.page.tmpl
-	pages, err := filepath.Glob(pathToTemplates + "/*.page.tmpl")
+func NewNoCache(dir string) *NoCacheRenderer {
+	return &NoCacheRenderer{dir}
+}
+
+func (r *NoCacheRenderer) View(w io.Writer, tmpl string, data *types.TemplateData) error {
+	fsys := os.DirFS(r.dir)
+
+	matches, err := fs.Glob(fsys, tmpl)
 	if err != nil {
-		return cache, err
+		return err
 	}
 
-	for _, page := range pages {
-		name := filepath.Base(page)
-
-		templates, err := template.New(name).Funcs(functions).ParseFiles(page)
-		if err != nil {
-			return cache, err
-		}
-
-		layouts, err := filepath.Glob(pathToTemplates + "/*.layout.tmpl")
-		if err != nil {
-			return cache, err
-		}
-
-		if len(layouts) > 0 {
-			templates, err = templates.ParseGlob(pathToTemplates + "/*.layout.tmpl")
-			if err != nil {
-				return cache, err
-			}
-		}
-
-		cache[name] = templates
+	if len(matches) == 0 {
+		return errors.New("no template found")
 	}
 
-	return cache, nil
+	t, err := template.New(tmpl).Funcs(funcs).ParseFS(fsys, matches[0], "*.layout.tmpl")
+	if err != nil {
+		return err
+	}
+
+	return write(w, t, data)
+}
+
+func write(w io.Writer, t *template.Template, data *types.TemplateData) error {
+	var buf bytes.Buffer
+	if err := t.Execute(&buf, data); err != nil {
+		return err
+	}
+
+	_, err := buf.WriteTo(w)
+	return err
 }

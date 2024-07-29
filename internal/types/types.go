@@ -1,10 +1,25 @@
-package models
+package types
 
 import (
 	"time"
+
+	"github.com/alexedwards/scs/v2"
 )
 
-// Reservation holds reservation form data
+type TemplateData struct {
+	Page   map[string]any
+	Flash  string
+	Error  string
+	AuthId int
+}
+
+type App struct {
+	// InfoLog      *log.Logger
+	// ErrorLog     *log.Logger
+	Session  *scs.SessionManager
+	MailChan chan MailData
+}
+
 type Reservation struct {
 	Id        int
 	FirstName string
@@ -20,7 +35,6 @@ type Reservation struct {
 	Room      Room
 }
 
-// User model
 type User struct {
 	Id          int
 	FirstName   string
@@ -32,7 +46,6 @@ type User struct {
 	UpdatedAt   time.Time
 }
 
-// Room model
 type Room struct {
 	Id        int       `json:"id"`
 	RoomName  string    `json:"room_name"`
@@ -41,7 +54,6 @@ type Room struct {
 	Slug      string    `json:"slug"`
 }
 
-// Restriction model
 type Restriction struct {
 	Id              int
 	RestrictionName string
@@ -49,7 +61,6 @@ type Restriction struct {
 	UpdatedAt       time.Time
 }
 
-// Room Restriction model
 type RoomRestriction struct {
 	Id            int
 	StartDate     time.Time

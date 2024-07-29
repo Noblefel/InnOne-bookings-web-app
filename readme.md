@@ -1,14 +1,12 @@
 # Reservations App
 
-Built in Go version 1.20 
+Built with Go version 1.22 using standard net/http and minimal third party reliance.
 
-### Dependencies
-- [Chi Router](https://github.com/go-chi/chi)
-- [Alex Edwards SCS Session Management](https://github.com/alexedwards/scs)
-- [Gorilla/CSRF](https://github.com/gorilla/csrf) 
-- [Go Validator](https://github.com/asaskevich/govalidator)
-- [pgx - PostgreSQL Driver and Toolkit](https://github.com/jackc/pgx)
-- [GoDotEnv](https://github.com/joho/godotenv)
+*frontend is still a mess
+
+### 3rd party dep 
+- [Alex Edwards SCS Session Management](https://github.com/alexedwards/scs)  
+- [pgx - PostgreSQL Driver and Toolkit](https://github.com/jackc/pgx) 
 - [Go Simple Mail](https://github.com/xhit/go-simple-mail)
 
 <img src="https://github.com/Noblefel/InnOne-bookings-web-app/blob/main/static/images/roompage.PNG">

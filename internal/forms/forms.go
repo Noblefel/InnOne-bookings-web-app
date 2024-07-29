@@ -2,23 +2,21 @@ package forms
 
 import (
 	"fmt"
+	"net/mail"
 	"net/url"
 	"strings"
-
-	"github.com/asaskevich/govalidator"
 )
 
-// Form creates a custom form struct, with url.Values object
+// Very basic string form validation
 type Form struct {
 	url.Values
-	Errors errors
+	Errors map[string][]string
 }
 
-// Creates a form struct
 func New(data url.Values) *Form {
 	return &Form{
 		data,
-		errors(map[string][]string{}),
+		make(map[string][]string),
 	}
 }
 
@@ -27,26 +25,16 @@ func (f *Form) Required(fields ...string) {
 		value := f.Get(field)
 
 		if strings.TrimSpace(value) == "" {
-			f.Errors.Add(field, "Field cannot be empty")
+			f.addError(field, "Field cannot be empty")
 		}
 	}
 }
 
-// Has checks if form field is in post and not empty
-func (f *Form) Has(field string) bool {
-	x := f.Get(field)
-	if len(x) == 0 {
-		return false
-	}
+func (f *Form) Has(field string) bool { return len(f.Get(field)) > 0 }
 
-	return true
-}
-
-// MinLength checks for the minimum length, or must be atleast x length
 func (f *Form) MinLength(field string, length int) bool {
-	x := f.Get(field)
-	if len(x) < length {
-		f.Errors.Add(field, fmt.Sprintf("Field must be atleast %v characters", length))
+	if len(f.Get(field)) < length {
+		f.addError(field, fmt.Sprintf("Field must be atleast %v characters", length))
 		return false
 	}
 
@@ -54,15 +42,17 @@ func (f *Form) MinLength(field string, length int) bool {
 }
 
 func (f *Form) IsEmail(field string) bool {
-	if !govalidator.IsEmail(f.Get(field)) {
-		f.Errors.Add(field, "Invalid email address")
+	_, err := mail.ParseAddress(f.Get(field))
+	if err != nil {
+		f.addError(field, "Invalid email address")
 		return false
 	}
 
 	return true
 }
 
-// Valid returns true if there are no errors, otherwise false
-func (f *Form) Valid() bool {
-	return len(f.Errors) == 0
+func (f *Form) Valid() bool { return len(f.Errors) == 0 }
+
+func (f *Form) addError(field, msg string) {
+	f.Errors[field] = append(f.Errors[field], msg)
 }
